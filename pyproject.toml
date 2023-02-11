@@ -24,29 +24,51 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "click",
+  "rich",
+  "textual",
+  "typer",
+  "anyconfig"
 ]
 dynamic = ["version"]
 
 [project.urls]
-Documentation = "https://github.com/unknown/coverage-rich#readme"
-Issues = "https://github.com/unknown/coverage-rich/issues"
-Source = "https://github.com/unknown/coverage-rich"
+Documentation = "https://github.com/waylonwalker/coverage-rich#readme"
+Issues = "https://github.com/waylonwalker/coverage-rich/issues"
+Source = "https://github.com/waylonwalker/coverage-rich"
+Changelog = "https://github.com/waylonwalker/coverage-rich"
 
 [project.scripts]
-coverage-rich = "coverage_rich.cli:coverage_rich"
+coverage-rich = "coverage_rich.cli.app:app"
 
 [tool.hatch.version]
 path = "coverage_rich/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
+  "ipython",
+  "mypy",
+  "pyflyby",
   "pytest",
   "pytest-cov",
+  "pytest-mock",
+  "pytest-rich",
+  "ruff",
+  "black",
 ]
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=coverage_rich --cov=tests {args}"
-no-cov = "cov --no-cov {args}"
+test = "coverage run -m pytest"
+cov = "coverage-rich"
+lint = "ruff coverage_rich"
+format = "black coverage_rich"
+format-check = "black --check coverage_rich"
+build-docs = "markata build"
+lint-test = [
+ "lint",
+ "format-check",
+ "test",
+ "cov",
+]
+test-lint = "lint-test"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
@@ -64,3 +86,11 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --rich"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.coverage_rich]
+fail-under=80
