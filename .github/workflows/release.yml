@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "None/**"
+      - "coverage_rich/**"
       - "pyproject.toml"
 env:
   HATCH_INDEX_USER: __token__
