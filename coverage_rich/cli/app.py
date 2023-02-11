@@ -19,7 +19,8 @@ def version_callback(value: bool) -> None:
         value (bool): Boolean value to determine if the version should be printed.
 
     Raises:
-        typer.Exit: If the value is True, the version will be printed and the program will exit.
+        typer.Exit: If the value is True, the version will be printed and the
+        program will exit.
 
     Example:
         version_callback(True)
