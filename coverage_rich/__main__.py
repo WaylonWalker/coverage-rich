@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 import sys
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from .cli import coverage_rich
 
     sys.exit(coverage_rich())
