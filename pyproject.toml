@@ -58,7 +58,9 @@ dependencies = [
 ]
 [tool.hatch.envs.default.scripts]
 test = "coverage run -m pytest"
-cov = "coverage-rich report"
+covjson = 'coverage json'
+covreport = "coverage-rich report"
+cov = ['test', 'covjson', 'covreport']
 lint = "ruff coverage_rich"
 format = "black coverage_rich"
 format-check = "black --check coverage_rich"
@@ -66,7 +68,6 @@ build-docs = "markata build"
 lint-test = [
  "lint",
  "format-check",
- "test",
  "cov",
 ]
 test-lint = "lint-test"
@@ -79,7 +80,6 @@ source = [ "tests", "coverage_rich" ]
 
 [tool.coverage.run]
 branch = true
-parallel = true
 omit = [
   "coverage_rich/__about__.py",
 ]
@@ -97,4 +97,4 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 
 [tool.coverage_rich]
-fail-under=80
+fail-under=24

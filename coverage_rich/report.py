@@ -4,6 +4,8 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
+from coverage_rich.config import config
+
 
 def report():
     coverage_data = json.loads(Path("coverage.json").read_text())
@@ -48,3 +50,5 @@ def report():
 
     console = Console()
     console.print(table)
+    if coverage_data["totals"]["percent_covered"] < config.get("fail-under", 80):
+        raise SystemExit(f"test coverage under {config.get('fail-under', 80)}")
