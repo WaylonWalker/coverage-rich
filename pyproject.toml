@@ -27,7 +27,8 @@ dependencies = [
   "rich",
   "textual",
   "typer",
-  "anyconfig"
+  "anyconfig",
+  "coverage",
 ]
 dynamic = ["version"]
 
@@ -57,7 +58,7 @@ dependencies = [
 ]
 [tool.hatch.envs.default.scripts]
 test = "coverage run -m pytest"
-cov = "coverage-rich"
+cov = "coverage-rich report"
 lint = "ruff coverage_rich"
 format = "black coverage_rich"
 format-check = "black --check coverage_rich"
@@ -72,6 +73,9 @@ test-lint = "lint-test"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
+
+[tool.coverage.paths]
+source = [ "tests", "coverage_rich" ]
 
 [tool.coverage.run]
 branch = true
