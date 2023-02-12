@@ -12,7 +12,7 @@ def report(coverage_data=None):
         coverage_data = json.loads(
             subprocess.check_output(["coverage", "json", "-o", "-"])
         )
-    meta = coverage_data["meta"]
+    meta = coverage_data.get("meta", {})
 
     table = Table(title=f"pytest-{meta.get('version')} {meta.get('timestamp')}")
     table.add_column("Name", style="blue")
@@ -23,8 +23,8 @@ def report(coverage_data=None):
     table.add_column("Cover", justify="right", style="green")
     table.add_column("Missing", justify="right", style="green")
 
-    for filename, row in coverage_data["files"].items():
-        if row["summary"]["percent_covered"] < 80:
+    for filename, row in coverage_data.get("files", {}).items():
+        if row.get("summary", {}).get("percent_covered", 0) < 80:
             color = "red"
             name_color = "red"
         else:
@@ -32,26 +32,35 @@ def report(coverage_data=None):
             name_color = "blue"
         table.add_row(
             f"[{name_color}]{filename}[/]",
-            str(row["summary"]["num_statements"]),
-            f'{row["summary"]["missing_lines"]}',
-            str(row["summary"]["missing_branches"]),
-            str(row["summary"]["num_partial_branches"]),
-            f'[{color}]{row["summary"]["percent_covered_display"]}%[/]',
-            f'[{color}]{", ".join([str(i) for i in row["missing_lines"]])}[/]',
+            str(row.get("summary", {}).get("num_statements", "")),
+            f'{row.get("summary", {}).get("missing_lines", "")}',
+            str(row.get("summary", {}).get("missing_branches", "")),
+            str(row.get("summary", {}).get("num_partial_branches", "")),
+            f'[{color}]{row.get("summary", {}).get("percent_covered_display", "")}%[/]',
+            f'[{color}]{", ".join([str(i) for i in row.get("missing_lines", [])])}[/]',
         )
 
-    row = coverage_data["totals"]
+    row = coverage_data.get("totals", {})
+
+    if row.get("percent_covered", 0) < 80:
+        color = "red"
+        name_color = "red"
+    else:
+        color = "green"
+        name_color = "blue"
     filename = "overall"
     table.add_row(
         f"[{name_color}]{filename}[/]",
-        str(row["num_statements"]),
-        f'{row["missing_lines"]}',
-        str(row["missing_branches"]),
-        str(row["num_partial_branches"]),
-        f'[{color}]{row["percent_covered_display"]}%[/]',
+        str(row.get("num_statements", "")),
+        f'{row.get("missing_lines", "")}',
+        str(row.get("missing_branches", "")),
+        str(row.get("num_partial_branches", "")),
+        f'[{color}]{row.get("percent_covered_display", "")}%[/]',
     )
 
     console = Console()
     console.print(table)
-    if coverage_data["totals"]["percent_covered"] < config.get("fail-under", 80):
+    if coverage_data.get("totals", {}).get("percent_covered", 0) < config.get(
+        "fail-under", 80
+    ):
         raise SystemExit(f"test coverage under {config.get('fail-under', 80)}")
