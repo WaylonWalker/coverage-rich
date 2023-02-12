@@ -58,9 +58,8 @@ dependencies = [
 ]
 [tool.hatch.envs.default.scripts]
 test = "coverage run -m pytest"
-covjson = 'coverage json'
 covreport = "coverage-rich report"
-cov = ['test', 'covjson', 'covreport']
+cov = ['test', 'covreport']
 lint = "ruff coverage_rich"
 format = "black coverage_rich"
 format-check = "black --check coverage_rich"
