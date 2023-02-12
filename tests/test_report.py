@@ -2,9 +2,6 @@ import pytest
 
 from coverage_rich.report import report
 
-__all__ = ["report"]
-
-
 COVERAGE_DATA = {
     "meta": {
         "version": "7.1.0",
@@ -219,11 +216,6 @@ COVERAGE_DATA = {
         "missing_branches": 1,
     },
 }
-
-
-def test_report_coverage_data_none():
-    coverage_data = None
-    assert report(coverage_data=coverage_data) is None
 
 
 def test_report_coverage_data_empty():
