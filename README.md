@@ -1,3 +1,6 @@
+<img src="https://user-images.githubusercontent.com/22648375/218338845-4e0ff4e7-fb04-4d13-9b83-58d1b23d2a87.png" alt="coverage-rich" width="250" align=right>
+
+
 # coverage-rich
 
 [![PyPI - Version](https://img.shields.io/pypi/v/coverage-rich.svg)](https://pypi.org/project/coverage-rich)
