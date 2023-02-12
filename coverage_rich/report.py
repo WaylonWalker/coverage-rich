@@ -7,8 +7,11 @@ from rich.table import Table
 from coverage_rich.config import config
 
 
-def report():
-    coverage_data = json.loads(subprocess.check_output(["coverage", "json", "-o", "-"]))
+def report(coverage_data=None):
+    if coverage_data is None:
+        coverage_data = json.loads(
+            subprocess.check_output(["coverage", "json", "-o", "-"])
+        )
     meta = coverage_data["meta"]
 
     table = Table(title=f"pytest-{meta.get('version')} {meta.get('timestamp')}")
