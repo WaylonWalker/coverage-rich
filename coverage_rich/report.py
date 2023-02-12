@@ -1,5 +1,5 @@
 import json
-from pathlib import Path
+import subprocess
 
 from rich.console import Console
 from rich.table import Table
@@ -8,7 +8,7 @@ from coverage_rich.config import config
 
 
 def report():
-    coverage_data = json.loads(Path("coverage.json").read_text())
+    coverage_data = json.loads(subprocess.check_output(["coverage", "json", "-o", "-"]))
     meta = coverage_data["meta"]
 
     table = Table(title=f"pytest-{meta.get('version')} {meta.get('timestamp')}")
