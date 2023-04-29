@@ -1,17 +1,38 @@
 import json
 import subprocess
+import sys
 
 from rich.console import Console
 from rich.table import Table
 
 from coverage_rich.config import config
+from coverage_rich.console import console
+
+
+def get_coverage_data():
+    try:
+        return json.loads(subprocess.check_output(["coverage", "json", "-o", "-"]))
+
+    except subprocess.CalledProcessError:
+        console.log("No coverage data found.")
+        console.log("Attempting to combine coverage data...")
+
+    try:
+        subprocess.check_output(["coverage", "combine"])
+        return json.loads(subprocess.check_output(["coverage", "json", "-o", "-"]))
+    except subprocess.CalledProcessError:
+        Console().log("No coverage data found.")
+        Console().log()
+        Console().log("You might need to run coverage")
+        Console().log("coverage run my_program.py arg1 arg2")
+        Console().log("coverage run -m pytest")
+        Console().log("more help at https://coverage.readthedocs.io/")
+    sys.exit(1)
 
 
 def report(coverage_data=None):
     if coverage_data is None:
-        coverage_data = json.loads(
-            subprocess.check_output(["coverage", "json", "-o", "-"])
-        )
+        coverage_data = get_coverage_data()
     meta = coverage_data.get("meta", {})
 
     table = Table(title=f"pytest-{meta.get('version')} {meta.get('timestamp')}")
