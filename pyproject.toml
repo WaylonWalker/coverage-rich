@@ -52,7 +52,6 @@ dependencies = [
   "pytest",
   "pytest-cov",
   "pytest-mock",
-  "pytest-rich",
   "ruff",
   "black",
 ]
@@ -91,7 +90,7 @@ exclude_lines = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-ra -q --rich"
+addopts = "-ra -q"
 asyncio_mode = "auto"
 testpaths = ["tests"]
 
