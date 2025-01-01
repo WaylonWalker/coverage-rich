@@ -8,8 +8,8 @@ app = typer.Typer(
     name="coverage_rich",
     help="A rich terminal report for coveragepy.",
 )
-app.add_typer(config_app)
-app.add_typer(report_app)
+app.add_typer(config_app, name="config")
+app.add_typer(report_app, name="report")
 
 
 def version_callback(value: bool) -> None:

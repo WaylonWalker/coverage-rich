@@ -1,3 +1,7 @@
+## 0.2.1
+
+- fix issue #4 - add support for typer 0.14+
+
 ## 0.2.0
 
 - automatically combine coverage if coverage fails to load.
